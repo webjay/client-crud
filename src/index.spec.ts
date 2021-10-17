@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { strict as assert } from 'assert';
 import { get, post } from '.';
 // @ts-ignore
 import { get as getFromDist } from '../dist';
