@@ -6,7 +6,7 @@ const options = {
   target: 'node14',
   bundle: true,
   minify: true,
-  sourcemap: true,
+  sourcemap: false,
 };
 
 void build({
