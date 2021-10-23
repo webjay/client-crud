@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "test": "mocha",
     "build": "rm -f dist/* && ts-node build.ts",
-    "-predeploy": "npm version patch",
+    "predeploy": "npm version patch",
     "deploy": "npm publish"
   },
   "engines": {
