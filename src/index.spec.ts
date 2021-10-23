@@ -13,8 +13,6 @@ interface IPostmanResponse {
   url: string;
 }
 
-const hostnameTest = 'yzr7679ckh.execute-api.eu-west-1.amazonaws.com';
-
 describe('client-crud', () => {
   it('get is a method', () => {
     assert.strictEqual(typeof get, 'function');
@@ -42,30 +40,25 @@ describe('client-crud', () => {
     assert.strictEqual(data.json.test, true);
   });
 
-  xit('can get from AWS API Gateway', () => {
-    return get(
-      { host: hostnameTest, path: '/test/pets' },
-    );
-  });
-
-  xit('can post to AWS API Gateway', () => {
-    return post(
-      {
-        hostname: hostnameTest,
-        path: '/test/pets',
-      },
-      {
-        type: 'Utahraptor',
-        price: 1,
-      }
-    );
-  });
-
   it('can reject', () => {
     return assert.rejects(
       get(
         { hostname: 'localhost', port: 8910, path: '/' },
       )
     );
+  });
+
+  it('can handle http/1', () => {
+    return assert.doesNotReject(get(
+      { hostname: 'api.mapbox.com', path: '/' },
+    ));
+  });
+
+  it('can handle same server', () => {
+    const options = { hostname: 'example.com', path: '/' };
+    return Promise.all([
+      assert.doesNotReject(get(options)),
+      assert.doesNotReject(get(options)),
+    ]);
   });
 });
