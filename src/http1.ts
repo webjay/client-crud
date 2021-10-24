@@ -1,11 +1,12 @@
-import { Agent as HttpsAgent, request as httpsRequest, RequestOptions } from 'https';
+import { Agent as HttpsAgent, request as httpsRequest } from 'https';
+import { Options } from './types';
 import { handleResponse } from './lib';
 
 const userAgent = `Node${process.versions.node}/https.request client-crud`;
 
 const agent = new HttpsAgent({ keepAlive: true });
 
-const requestOptions = (options: RequestOptions) => {
+const requestOptions = (options: Options) => {
   return {
     agent,
     headers: {
@@ -18,7 +19,7 @@ const requestOptions = (options: RequestOptions) => {
 };
 
 const request = <ResultType>(
-  options: RequestOptions,
+  options: Options,
   data?: unknown
 ): Promise<ResultType> => {
   return new Promise<ResultType>((resolve, reject) => {
@@ -32,7 +33,9 @@ const request = <ResultType>(
           headers: { 'content-type': contentType = '' },
         } = res;
 
-        handleResponse<ResultType>(res, statusCode, contentType).then(resolve).catch(reject);
+        const { returnBuffer } = options;
+
+        handleResponse<ResultType>(res, statusCode, contentType, returnBuffer).then(resolve).catch(reject);
       }
     );
 

@@ -1,5 +1,5 @@
 import { connect as http2Connect, constants as http2Constants } from 'http2';
-import { RequestOptions } from 'https';
+import { Options } from './types';
 import { handleResponse } from './lib';
 
 const {
@@ -10,7 +10,7 @@ const {
   HTTP2_HEADER_USER_AGENT,
 } = http2Constants;
 
-const requestOptions = (options: RequestOptions) => {
+const requestOptions = (options: Options) => {
   return {
     headers: {
       [HTTP2_HEADER_USER_AGENT]: `Node${process.versions.node}/HTTP/2 client-crud`,
@@ -22,7 +22,7 @@ const requestOptions = (options: RequestOptions) => {
 };
 
 const request = <ResultType>(
-  options: RequestOptions,
+  options: Options,
   data?: unknown
 ): Promise<ResultType> => {
   return new Promise<ResultType>((resolve, reject) => {
@@ -67,11 +67,11 @@ const request = <ResultType>(
       [HTTP2_HEADER_PATH]: path,
     };
 
-    const http2RequestOptions = {
+    const http2Options = {
       endStream: dataStringified === undefined,
     };
 
-    const req = client.request(headersToSend, http2RequestOptions);
+    const req = client.request(headersToSend, http2Options);
 
     req.on('error', reject);
 
@@ -92,8 +92,9 @@ const request = <ResultType>(
     req.on('response', (responseHeaders) => {
       const statusCode = responseHeaders[HTTP2_HEADER_STATUS] as unknown as number;
       const contentType = responseHeaders[HTTP2_HEADER_CONTENT_TYPE] as unknown as string;
+      const { returnBuffer } = options;
 
-      handleResponse<ResultType>(req, statusCode, contentType).then(resolve).catch(reject);
+      handleResponse<ResultType>(req, statusCode, contentType, returnBuffer).then(resolve).catch(reject);
 
       req.on('end', () => {
         client.close();

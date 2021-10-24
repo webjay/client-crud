@@ -1,16 +1,13 @@
-import { RequestOptions } from 'https';
 import { connect, ConnectionOptions } from 'tls';
 import { request as request1 } from './http1';
 import { request as request2 } from './http2';
+import { Options } from './types';
 
 type RequestMethod = typeof request2 | typeof request1;
 
 const ALPNProtocols = ['h2', 'http/1.1', 'http/1.0'];
 
-const request = <ResultType>(
-  options: RequestOptions,
-  data?: unknown
-): Promise<ResultType> => {
+const request = <ResultType>(options: Options, data?: unknown): Promise<ResultType> => {
   return new Promise<ResultType>((resolve, reject) => {
     const { hostname, host, port = 443 } = options;
     const servername = hostname ?? host;
@@ -47,17 +44,10 @@ const request = <ResultType>(
   });
 };
 
-const get = <ResultType>(
-  options: RequestOptions,
-): Promise<ResultType> => request(options);
+const get = <ResultType>(options: Options): Promise<ResultType> => request(options);
 
 const [post, put, patch, remove] = ['POST', 'PUT', 'PATCH', 'DELETE'].map(
-  (method) =>
-    <ResultType>(
-      options: RequestOptions,
-      data: unknown
-    ): Promise<ResultType> =>
-      request({ ...options, method }, data)
+  (method) => <ResultType>(options: Options, data: unknown): Promise<ResultType> => request({ ...options, method }, data)
 );
 
 export { get, post, put, patch, remove as delete };
