@@ -35,5 +35,4 @@ Method parameters:
 ## Deploy
 
     npm run build
-    npx tsc
     npm run deploy

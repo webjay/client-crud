@@ -10,9 +10,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "compile": "tsc",
     "lint": "eslint .",
     "test": "mocha",
-    "build": "rm -f dist/* && ts-node build.ts",
+    "build": "rm -f dist/* && tsc && ts-node build.ts",
     "predeploy": "npm version patch",
     "deploy": "npm publish"
   },
