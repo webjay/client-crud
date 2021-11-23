@@ -50,4 +50,4 @@ const [post, put, patch, remove] = ['POST', 'PUT', 'PATCH', 'DELETE'].map(
   (method) => <ResultType>(options: Options, data: unknown): Promise<ResultType> => request({ ...options, method }, data)
 );
 
-export { get, post, put, patch, remove as delete };
+export { request, get, post, put, patch, remove as delete };
