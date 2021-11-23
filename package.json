@@ -1,6 +1,6 @@
 {
   "name": "client-crud",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "HTTP/2 CRUD client",
   "author": "Jacob Friis Saxberg",
   "license": "MIT",
