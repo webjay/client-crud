@@ -40,7 +40,6 @@ const request = <ResultType>(
     );
 
     req.on('error', (error: NodeJS.ErrnoException) => {
-      // @ts-expect-error `@types/node` has incomplete types
       if (error.code === 'ECONNRESET' && req.reusedSocket === true) {
         request(options, data)
           .then((result) => void resolve(result as ResultType))
